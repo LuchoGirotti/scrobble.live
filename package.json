@@ -1,0 +1,21 @@
+  {
+    "name": "scrobble.live",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+      "start": "vercel dev"
+    },
+    "dependencies": {
+      "cheerio": "^1.0.0-rc.10"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/lucho-girotti/scrobble.live.git"
+    },
+    "author": "lucho-girotti",
+    "bugs": {
+      "url": "https://github.com/lucho-girotti/scrobble.live/issues"
+    },
+    "homepage": "https://github.com/lucho-girotti/scrobble.live#readme",
+    "description": ""
+  }
