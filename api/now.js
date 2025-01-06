@@ -1,4 +1,3 @@
-
 import { load } from 'cheerio';
 
 export default async (req, res) => {
@@ -7,19 +6,30 @@ export default async (req, res) => {
     const htmlContent = await response.text();
     const $ = load(htmlContent);
     const nowScrobbling = $('.chartlist-row--now-scrobbling');
+    let scrobblingNow = false;
+    let trackName, artistName, albumName, albumCoverUrl;
+
     if (nowScrobbling.length) {
-        const trackName = nowScrobbling.find('.chartlist-name').text().trim();
-        const artistName = nowScrobbling.find('.chartlist-artist').text().trim();
+        scrobblingNow = true;
+        trackName = nowScrobbling.find('.chartlist-name').text().trim();
+        artistName = nowScrobbling.find('.chartlist-artist').text().trim();
         const albumImage = nowScrobbling.find('img');
-        const albumName = albumImage.attr('alt');
-        const albumCoverUrl = albumImage.attr('src').replace('/64s/', '/500x500/');
-        res.status(200).json({
-            trackName: trackName,
-            artistName: artistName,
-            albumName: albumName,
-            albumCoverUrl: albumCoverUrl
-        });
+        albumName = albumImage.attr('alt');
+        albumCoverUrl = albumImage.attr('src').replace('/64s/', '/500x500/');
     } else {
-        res.status(404).json({ error: "No scrobbling data found" });
+        const lastScrobble = $('.chartlist-row').first();
+        trackName = lastScrobble.find('.chartlist-name').text().trim();
+        artistName = lastScrobble.find('.chartlist-artist').text().trim();
+        const albumImage = lastScrobble.find('img');
+        albumName = albumImage.attr('alt');
+        albumCoverUrl = albumImage.attr('src').replace('/64s/', '/500x500/');
     }
+
+    res.status(200).json({
+        scrobblingNow: scrobblingNow,
+        trackName: trackName,
+        artistName: artistName,
+        albumName: albumName,
+        albumCoverUrl: albumCoverUrl
+    });
 };
