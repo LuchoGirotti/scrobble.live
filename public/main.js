@@ -81,6 +81,13 @@ Enjoy!
                     container.appendChild(artistAlbum);
                     document.body.style.backgroundImage = `url(${data.albumCoverUrl})`;
                 }
+                const close = document.createElement("a");
+                close.href = `https://www.last.fm/user/${username}`;
+                close.className = "close";
+                const closeImage = document.createElement("img");
+                closeImage.src = "https://www.last.fm/static/images/icons/delete_light_24.png";
+                close.appendChild(closeImage);
+                document.body.appendChild(close);
             });
     } else {
         container.appendChild(Object.assign(document.createElement("h1"), { className: "title", textContent: "Scrobble.Live" }));

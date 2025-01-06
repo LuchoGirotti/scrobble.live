@@ -132,15 +132,27 @@ p {
     text-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
 }
 
+.close img {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
 #now_scrobbling_container .track-name,
 #now_scrobbling_container .artist,
-#now_scrobbling_container .album {
+#now_scrobbling_container .album,
+.close img {
     opacity: 0.9;
 }
 
 #now_scrobbling_container .track-name:hover,
 #now_scrobbling_container .artist:hover,
-#now_scrobbling_container .album:hover {
+#now_scrobbling_container .album:hover,
+.close img:hover {
     opacity: 1;
 }
 
