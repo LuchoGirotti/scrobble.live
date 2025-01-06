@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-console.log(`Scrobble.Live - A free and open-source alternative to Last.fm's "/now" page. 
+    console.log(`Scrobble.Live - A free and open-source alternative to Last.fm's "/now" page.
 Copyright (C) 2025  Luciano Girotti
 
 This program is free software: you can redistribute it and/or modify
@@ -94,8 +94,11 @@ LAST.FM IS A TRADEMARK OF LAST.FM LTD. SCROBBLE.LIVE IS NOT AFFILIATED WITH, END
     } else {
         container.appendChild(Object.assign(document.createElement("h1"), { className: "title", textContent: "Scrobble.Live" }));
         container.appendChild(Object.assign(document.createElement("p"), { className: "description", textContent: "A free and open-source alternative to Last.fm's /now page" }));
-        container.appendChild(Object.assign(document.createElement("a"), { className: "source", href: "https://github.com/lucho-girotti/scrobble.live", textContent: "Source Code" }));
-        container.appendChild(Object.assign(document.createElement("p"), { className: "notice", textContent: "LAST.FM IS A TRADEMARK OF LAST.FM LTD. SCROBBLE.LIVE IS NOT AFFILIATED WITH, ENDORSED BY, OR ASSOCIATED WITH LAST.FM IN ANY WAY. THE NAME \"LAST.FM\" IS USED SOLELY UNDER NOMINATIVE FAIR USE TO DESCRIBE THE SERVICE THIS PROJECT INTERACTS WITH."}));
+        const infoContainer = document.createElement("div");
+        infoContainer.className = "info-container";
+        infoContainer.appendChild(Object.assign(document.createElement("a"), { className: "source", href: "https://github.com/lucho-girotti/scrobble.live", textContent: "Source Code" }));
+        infoContainer.appendChild(Object.assign(document.createElement("p"), { className: "notice", textContent: "LAST.FM IS A TRADEMARK OF LAST.FM LTD. SCROBBLE.LIVE IS NOT AFFILIATED WITH, ENDORSED BY, OR ASSOCIATED WITH LAST.FM IN ANY WAY. THE NAME \"LAST.FM\" IS USED SOLELY UNDER NOMINATIVE FAIR USE TO DESCRIBE THE SERVICE THIS PROJECT INTERACTS WITH."}));
+        container.appendChild(infoContainer);
         const input = Object.assign(document.createElement("input"), { type: "text", placeholder: "Username", className: "username-input" });
         container.appendChild(input);
 
