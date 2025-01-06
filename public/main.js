@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
+console.log("Welcome to Scrobble.Live! A free and open-source alternative to Last.fm's /now page\nSource Code: https://github.com/lucho-girotti/scrobble.live");
     const urlParams = new URLSearchParams(window.location.search);
-    const username = urlParams.get("user");
+    let username = urlParams.get("user");
 
     const container = document.getElementById("now_scrobbling_container");
     const loadingText = document.createElement("div");
@@ -12,11 +13,23 @@ document.addEventListener("DOMContentLoaded", () => {
         fetch(`/api/now.js?username=${username}`)
             .then(response => response.json())
             .then(data => {
-                if (!data.scrobblingNow) {
-                    const p = document.createElement("p");
-                    p.textContent = `${username} last scrobbled… `;
-                    container.appendChild(p);
+                if (data.error) {
+                    document.title = data.error;
+                    container.removeChild(loadingText);
+                    container.appendChild(Object.assign(document.createElement("h1"), { className: "title", textContent: data.error }));
+                    setTimeout(() => window.location.search = "", 3000);
+                    return;
                 }
+                username = data.username; // Correct case
+                document.title = `${data.username}'s now playing | Scrobble.Live`;
+                const p = document.createElement("p");
+                p.className = "message";
+                if (data.scrobblingNow) {
+                    p.textContent = `${username} is scrobbling… `;
+                } else {
+                    p.textContent = `${username} last scrobbled… `;
+                }
+                container.parentNode.insertBefore(p, container);
                 const trackName = document.createElement("div");
                 trackName.className = "track-name";
                 const trackLink = document.createElement("a");
@@ -35,8 +48,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 albumLink.href = `https://www.last.fm/music/${data.artistName.replace(/ /g, '+')}/${data.albumName.replace(/ /g, '+')}`;
                 albumLink.textContent = data.albumName;
                 albumLink.target = "_blank";
+                artistLink.className = "artist";
+                albumLink.className = "album";
                 artistAlbum.appendChild(artistLink);
-                artistAlbum.appendChild(document.createTextNode(' · '));
+                artistAlbum.appendChild(Object.assign(document.createElement("span"), { className: "separator", textContent: '·' }));
                 artistAlbum.appendChild(albumLink);
 
                 const albumCover = document.createElement("img");
@@ -50,10 +65,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
     } else {
-        const input = document.createElement("input");
-        input.type = "text";
-        input.placeholder = "Username";
-        input.className = "username-input";
+        container.appendChild(Object.assign(document.createElement("h1"), { className: "title", textContent: "Scrobble.Live" }));
+        container.appendChild(Object.assign(document.createElement("p"), { className: "description", textContent: "A free and open-source alternative to Last.fm's /now page" }));
+        container.appendChild(Object.assign(document.createElement("a"), { className: "source", href: "https://github.com/lucho-girotti/scrobble.live", textContent: "Source Code" }));
+        const input = Object.assign(document.createElement("input"), { type: "text", placeholder: "Username", className: "username-input" });
         container.appendChild(input);
 
         input.addEventListener("keypress", (event) => {
