@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const path = window.location.pathname.substring(1);
+            if (path) {
+                window.location.href = `/?user=${path}`;
+            } else {
+                window.location.href = `/`;
+            }
+        });
+    </script>
+</head>
+<body>
+</body>
+</html>
