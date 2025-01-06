@@ -1,5 +1,23 @@
 document.addEventListener("DOMContentLoaded", () => {
-console.log("Welcome to Scrobble.Live! A free and open-source alternative to Last.fm's /now page\nSource Code: https://github.com/lucho-girotti/scrobble.live");
+console.log(`Scrobble.Live - A free and open-source alternative to Last.fm's /now page.
+Copyright (C) 2025  Luciano Girotti
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+
+Source Code: https://github.com/lucho-girotti/scrobble.live
+If you have any questions, suggestions, or feedback, kindly open an issue on GitHub.
+
+Enjoy!
+`);
     const urlParams = new URLSearchParams(window.location.search);
     let username = urlParams.get("user");
 

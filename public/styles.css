@@ -80,7 +80,7 @@ body {
     text-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
 }
 
-#now_scrobbling_container .artist-album span {
+.separator {
     padding: 0 15px;
 }
 
@@ -132,6 +132,18 @@ p {
     text-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
 }
 
+#now_scrobbling_container .track-name,
+#now_scrobbling_container .artist,
+#now_scrobbling_container .album {
+    opacity: 0.9;
+}
+
+#now_scrobbling_container .track-name:hover,
+#now_scrobbling_container .artist:hover,
+#now_scrobbling_container .album:hover {
+    opacity: 1;
+}
+
 @media (max-width: 1259px) {
     #now_scrobbling_container img {
         max-width: 300px;
@@ -151,16 +163,7 @@ p {
     .message {
         font-size: 14px;
     }
-}
-
-#now_scrobbling_container .track-name,
-#now_scrobbling_container .artist,
-#now_scrobbling_container .album {
-    opacity: 0.9;
-}
-
-#now_scrobbling_container .track-name:hover,
-#now_scrobbling_container .artist:hover,
-#now_scrobbling_container .album:hover {
-    opacity: 1;
+    .separator {
+        padding: 5px;
+    }
 }

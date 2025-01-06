@@ -7,7 +7,6 @@ export default async (req, res) => {
         const htmlContent = await response.text();
         const $ = load(htmlContent);
         let nowScrobbling, trackName, artistName, albumName, albumCoverUrl, scrobblingNow;
-        console.log($('title').text());
         if ($('title').text().includes('Page Not Found')) {
             res.status(400).json({ error: `User ${username} not found` });
             return;
