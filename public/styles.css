@@ -41,10 +41,15 @@ body {
     text-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
     padding: 40px 0;
 }
+
 .info-container {
     position: absolute;
     bottom: 0;
     padding-bottom: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .notice {
@@ -59,18 +64,11 @@ body {
 }
 
 .source {
-    position: absolute;
-    right: 0;
-    left: 0;
-    bottom: 100%;
-    width: 100%;
     font-size: 18px;
     color: white;
     text-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
     margin-bottom: 10px;
 }
-
-
 
 #now_scrobbling_container {
     text-align: center;
