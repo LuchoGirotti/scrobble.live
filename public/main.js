@@ -20,8 +20,16 @@ Enjoy!
 
 LAST.FM IS A TRADEMARK OF LAST.FM LTD. SCROBBLE.LIVE IS NOT AFFILIATED WITH, ENDORSED BY, OR ASSOCIATED WITH LAST.FM IN ANY WAY. THE NAME "LAST.FM" IS USED SOLELY UNDER NOMINATIVE FAIR USE TO DESCRIBE THE SERVICE THIS PROJECT INTERACTS WITH.
 `);
-    const urlParams = new URLSearchParams(window.location.search);
-    let username = urlParams.get("user");
+    
+    // Get username from URL path or query parameter
+    let username = null;
+    const pathParts = window.location.pathname.split('/').filter(part => part.length > 0);
+    if (pathParts.length > 0) {
+        username = pathParts[0]; // Get username from URL path (e.g., /username)
+    } else {
+        const urlParams = new URLSearchParams(window.location.search);
+        username = urlParams.get("user"); // Fallback to ?user=username
+    }
 
     const container = document.getElementById("now_scrobbling_container");
     const loadingText = document.createElement("div");
@@ -29,27 +37,103 @@ LAST.FM IS A TRADEMARK OF LAST.FM LTD. SCROBBLE.LIVE IS NOT AFFILIATED WITH, END
     container.appendChild(loadingText);
 
     if (username) {
-        loadingText.textContent = `Fetching ${username}'s current scrobble...`;
-        fetch(`/api/now.js?username=${username}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    document.title = data.error;
-                    container.removeChild(loadingText);
-                    container.appendChild(Object.assign(document.createElement("h1"), { className: "title", textContent: data.error }));
-                    setTimeout(() => window.location.search = "", 3000);
-                    return;
+        let ws;
+        let currentTrackId = null;
+        let reconnectAttempts = 0;
+        const maxReconnectAttempts = 5;
+        
+        const connectWebSocket = () => {
+            // Always connect to the hosted backend
+            const wsUrl = 'wss://scrobble-live.onrender.com';
+            
+            console.log(`🔗 Connecting to WebSocket: ${wsUrl}`);
+            ws = new WebSocket(wsUrl);
+            
+            ws.onopen = () => {
+                console.log('🔗 WebSocket connected');
+                reconnectAttempts = 0;
+                loadingText.textContent = `Connecting to ${username}'s live feed...`;
+                
+                // Suscribirse al usuario
+                ws.send(JSON.stringify({
+                    type: 'subscribe',
+                    username: username
+                }));
+            };
+            
+            ws.onmessage = (event) => {
+                try {
+                    const message = JSON.parse(event.data);
+                    
+                    if (message.type === 'initial' || message.type === 'update') {
+                        handleDataUpdate(message.data);
+                    }
+                } catch (error) {
+                    console.error('Error parsing WebSocket message:', error);
                 }
-                username = data.username; // Correct case
-                document.title = `${data.username}'s now playing | Scrobble.Live`;
-                const p = document.createElement("p");
-                p.className = "message";
-                if (data.scrobblingNow) {
-                    p.textContent = `${username} is scrobbling… `;
+            };
+            
+            ws.onclose = () => {
+                console.log('📡 WebSocket disconnected');
+                
+                // Intentar reconectar
+                if (reconnectAttempts < maxReconnectAttempts) {
+                    reconnectAttempts++;
+                    console.log(`🔄 Attempting to reconnect (${reconnectAttempts}/${maxReconnectAttempts})`);
+                    setTimeout(connectWebSocket, 2000 * reconnectAttempts);
                 } else {
-                    p.textContent = `${username} last scrobbled… `;
+                    console.error('❌ Max reconnection attempts reached');
+                    loadingText.textContent = 'Connection lost. Please refresh the page.';
                 }
-                container.parentNode.insertBefore(p, container);
+            };
+            
+            ws.onerror = (error) => {
+                console.error('WebSocket error:', error);
+            };
+        };
+        
+        const handleDataUpdate = (data) => {
+            if (data.error) {
+                document.title = data.error;
+                container.removeChild(loadingText);
+                container.appendChild(Object.assign(document.createElement("h1"), { className: "title", textContent: data.error }));
+                setTimeout(() => window.location.pathname = "/", 3000);
+                return;
+            }
+            
+            username = data.username; // Correct case
+            document.title = `${data.username}'s now playing | Scrobble.Live`;
+            
+            // Create a unique identifier for the current track
+            const trackId = `${data.artistName}-${data.trackName}-${data.albumName}`;
+            
+            // Only update UI if the track has changed
+            if (currentTrackId !== trackId) {
+                currentTrackId = trackId;
+                console.log(`🎵 Track updated: ${data.artistName} - ${data.trackName}`);
+                
+                // Clear existing content
+                const existingAlbumCover = container.querySelector('img');
+                const existingTrackName = container.querySelector('.track-name');
+                const existingArtistAlbum = container.querySelector('.artist-album');
+                if (existingAlbumCover) container.removeChild(existingAlbumCover);
+                if (existingTrackName) container.removeChild(existingTrackName);
+                if (existingArtistAlbum) container.removeChild(existingArtistAlbum);
+                
+                // Update or create message element
+                let messageElement = document.querySelector('.message');
+                if (!messageElement) {
+                    messageElement = document.createElement("p");
+                    messageElement.className = "message";
+                    container.parentNode.insertBefore(messageElement, container);
+                }
+                
+                if (data.scrobblingNow) {
+                    messageElement.textContent = `${username} is scrobbling… `;
+                } else {
+                    messageElement.textContent = `${username} last scrobbled… `;
+                }
+                
                 const trackName = document.createElement("div");
                 trackName.className = "track-name";
                 const trackLink = document.createElement("a");
@@ -76,21 +160,48 @@ LAST.FM IS A TRADEMARK OF LAST.FM LTD. SCROBBLE.LIVE IS NOT AFFILIATED WITH, END
 
                 const albumCover = document.createElement("img");
                 albumCover.src = data.albumCoverUrl;
-                albumCover.onload = () => {
+                
+                // Remove loading text immediately
+                if (loadingText.parentNode) {
                     container.removeChild(loadingText);
+                }
+                
+                albumCover.onload = () => {
                     container.appendChild(albumCover);
                     container.appendChild(trackName);
                     container.appendChild(artistAlbum);
                     document.body.style.backgroundImage = `url(${data.albumCoverUrl})`;
                 }
-                const close = document.createElement("a");
-                close.href = `https://www.last.fm/user/${username}`;
-                close.className = "close";
-                const closeImage = document.createElement("img");
-                closeImage.src = "https://www.last.fm/static/images/icons/delete_light_24.png";
-                close.appendChild(closeImage);
-                document.body.appendChild(close);
-            });
+                
+                // Handle image load error
+                albumCover.onerror = () => {
+                    container.appendChild(trackName);
+                    container.appendChild(artistAlbum);
+                }
+                
+                // Add close button only once
+                if (!document.querySelector('.close')) {
+                    const close = document.createElement("a");
+                    close.href = `https://www.last.fm/user/${username}`;
+                    close.className = "close";
+                    const closeImage = document.createElement("img");
+                    closeImage.src = "https://www.last.fm/static/images/icons/delete_light_24.png";
+                    close.appendChild(closeImage);
+                    document.body.appendChild(close);
+                }
+            }
+        };
+        
+        // Conectar WebSocket
+        connectWebSocket();
+        
+        // Cleanup cuando se cierra la página
+        window.addEventListener('beforeunload', () => {
+            if (ws) {
+                ws.close();
+            }
+        });
+        
     } else {
         container.appendChild(Object.assign(document.createElement("h1"), { className: "title", textContent: "Scrobble.Live" }));
         container.appendChild(Object.assign(document.createElement("p"), { className: "description", textContent: "A free and open-source alternative to Last.fm's /now page" }));
@@ -106,7 +217,7 @@ LAST.FM IS A TRADEMARK OF LAST.FM LTD. SCROBBLE.LIVE IS NOT AFFILIATED WITH, END
             if (event.key === "Enter") {
                 const enteredUsername = input.value.trim();
                 if (enteredUsername) {
-                    window.location.search = `?user=${enteredUsername}`;
+                    window.location.pathname = `/${enteredUsername}`;
                 }
             }
         });

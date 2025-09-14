@@ -1,0 +1,6 @@
+# Render Configuration
+buildCommand: npm install
+startCommand: npm start
+node: 18.x
+healthCheckPath: /health
+branch: main
