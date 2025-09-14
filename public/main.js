@@ -41,6 +41,7 @@ LAST.FM IS A TRADEMARK OF LAST.FM LTD. SCROBBLE.LIVE IS NOT AFFILIATED WITH, END
         let currentTrackId = null;
         let reconnectAttempts = 0;
         const maxReconnectAttempts = 5;
+        let keepAliveInterval;
         
         const connectWebSocket = () => {
             // Always connect to the hosted backend
@@ -59,6 +60,12 @@ LAST.FM IS A TRADEMARK OF LAST.FM LTD. SCROBBLE.LIVE IS NOT AFFILIATED WITH, END
                     type: 'subscribe',
                     username: username
                 }));
+                
+                // Keep-alive ping every 10 minutes to prevent Render sleep
+                keepAliveInterval = setInterval(() => {
+                    fetch('https://scrobble-live.onrender.com/ping')
+                        .catch(err => console.log('Keep-alive ping failed:', err));
+                }, 600000); // 10 minutes
             };
             
             ws.onmessage = (event) => {
@@ -75,6 +82,12 @@ LAST.FM IS A TRADEMARK OF LAST.FM LTD. SCROBBLE.LIVE IS NOT AFFILIATED WITH, END
             
             ws.onclose = () => {
                 console.log('📡 WebSocket disconnected');
+                
+                // Clear keep-alive interval
+                if (keepAliveInterval) {
+                    clearInterval(keepAliveInterval);
+                    keepAliveInterval = null;
+                }
                 
                 // Intentar reconectar
                 if (reconnectAttempts < maxReconnectAttempts) {
@@ -197,6 +210,9 @@ LAST.FM IS A TRADEMARK OF LAST.FM LTD. SCROBBLE.LIVE IS NOT AFFILIATED WITH, END
         
         // Cleanup cuando se cierra la página
         window.addEventListener('beforeunload', () => {
+            if (keepAliveInterval) {
+                clearInterval(keepAliveInterval);
+            }
             if (ws) {
                 ws.close();
             }
