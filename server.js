@@ -38,9 +38,6 @@ const wss = new WebSocket.Server({ server });
 const userCache = new Map();
 const activeConnections = new Map(); // username -> Set of WebSocket connections
 
-// Serve static files
-app.use(express.static('public'));
-
 // Health check endpoint for Render
 app.get('/health', (req, res) => {
     res.json({ 
