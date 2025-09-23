@@ -144,9 +144,9 @@ class ScrobbleLiveDiscordBot {
         try {
             const activity = {
                 details: data.trackName,
-                state: `${data.artistName} • Powered by Scrobble.Live`,
+                state: data.artistName,
                 largeImageKey: data.albumCoverUrl,
-                largeImageText: `${data.albumName} | Scrobble.Live`,
+                largeImageText: data.albumName,
                 smallImageKey: data.scrobblingNow ? 'playing' : 'paused',
                 smallImageText: data.scrobblingNow ? 'Now playing • scrobble.live' : 'Last played • scrobble.live',
                 instance: false,
