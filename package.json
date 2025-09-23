@@ -15,9 +15,9 @@
     },
     "repository": {
       "type": "git",
-      "url": "git+https://github.com/lucho-girotti/scrobble.live.git"
+      "url": "git+https://github.com/LuchoGirotti/scrobble.live.git"
     },
-    "author": "lucho-girotti",
+    "author": "LuchoGirotti",
     "homepage": "https://scrobble.live",
     "description": "A free and open-source alternative to Last.fm's /now page with real-time WebSocket updates"
   }

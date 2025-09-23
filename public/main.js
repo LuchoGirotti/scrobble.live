@@ -55,7 +55,7 @@ LAST.FM IS A TRADEMARK OF LAST.FM LTD. SCROBBLE.LIVE IS NOT AFFILIATED WITH, END
                 reconnectAttempts = 0;
                 loadingText.textContent = `Connecting to ${username}'s live feed...`;
                 
-                // Suscribirse al usuario
+                // Subscribe to user
                 ws.send(JSON.stringify({
                     type: 'subscribe',
                     username: username
@@ -89,7 +89,7 @@ LAST.FM IS A TRADEMARK OF LAST.FM LTD. SCROBBLE.LIVE IS NOT AFFILIATED WITH, END
                     keepAliveInterval = null;
                 }
                 
-                // Intentar reconectar
+                // Attempt to reconnect
                 if (reconnectAttempts < maxReconnectAttempts) {
                     reconnectAttempts++;
                     console.log(`🔄 Attempting to reconnect (${reconnectAttempts}/${maxReconnectAttempts})`);
@@ -205,10 +205,10 @@ LAST.FM IS A TRADEMARK OF LAST.FM LTD. SCROBBLE.LIVE IS NOT AFFILIATED WITH, END
             }
         };
         
-        // Conectar WebSocket
+        // Connect WebSocket
         connectWebSocket();
         
-        // Cleanup cuando se cierra la página
+        // Cleanup when page is closed
         window.addEventListener('beforeunload', () => {
             if (keepAliveInterval) {
                 clearInterval(keepAliveInterval);

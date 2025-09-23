@@ -1,0 +1,18 @@
+{
+  "name": "scrobble-live-discord-rpc",
+  "version": "1.0.0",
+  "description": "Discord Rich Presence que muestra tu música actual de Last.fm usando Scrobble.Live",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node index.js"
+  },
+  "keywords": ["discord", "rpc", "lastfm", "music", "scrobble"],
+  "author": "LuchoGirotti",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "discord-rpc": "^4.0.1",
+    "ws": "^8.17.1",
+    "dotenv": "^16.4.5"
+  }
+}

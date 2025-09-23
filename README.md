@@ -12,6 +12,7 @@ The official "/now" page is part of Last.fm's "Pro" features. For comparison, vi
 ## 🎵 Features
 
 - **Real-time updates** via WebSockets - see track changes instantly
+- **Discord Rich Presence** - Show your current music in your Discord profile
 - **Clean interface** with album artwork and track information
 - **Free to use** - no registration or API keys required
 - **Clean URLs** - use `scrobble.live/username` format
@@ -32,9 +33,30 @@ Replace `USERNAME` with any Last.fm username to see their current or last scrobb
 
 The page will automatically update in real-time when the track changes!
 
+## 🎮 Discord Rich Presence
+
+Show your current Last.fm music directly in your Discord profile with our Discord Rich Presence bot!
+
+### Features:
+- **Real-time sync** with your Last.fm scrobbles
+- **Album artwork** displayed in your Discord profile
+- **Track and artist info** with Scrobble.Live branding
+- **Automatic updates** when you change songs
+
+Your Discord profile will now show:
+```
+🟢 Your Username
+Playing [Your App Name]
+  [Song Name]
+  [Artist]
+```
+
+For detailed setup instructions, see the [Discord RPC README](discord-rpc/README.md).
+
 ## 🖥️ Perfect for
 
 - **TV displays** - Show your current music on a smart TV or second monitor
+- **Discord profiles** - Real-time Rich Presence showing your current track
 - **Sharing** - Share your live music with friends via a simple URL
 - **Real-time visualization** - See track changes instantly without refreshing
 - **No hassle** - No accounts, API keys, or complex setup required
@@ -82,6 +104,11 @@ scrobble.live/
 ├── package.json           # Dependencies and scripts
 ├── render.yaml            # Render deployment config
 ├── vercel.json            # Vercel deployment config
+├── discord-rpc/           # Discord Rich Presence bot
+│   ├── index.js          # Discord RPC client
+│   ├── package.json      # Bot dependencies
+│   ├── README.md         # Bot setup instructions
+│   └── .env.example      # Environment variables template
 └── public/
     ├── index.html         # Frontend HTML
     ├── main.js            # Frontend JavaScript with WebSocket
