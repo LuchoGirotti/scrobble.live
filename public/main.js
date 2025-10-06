@@ -48,6 +48,7 @@ LAST.FM IS A TRADEMARK OF LAST.FM LTD. SCROBBLE.LIVE IS NOT AFFILIATED WITH, END
             const wsUrl = 'wss://scrobble-live.onrender.com';
             
             console.log(`🔗 Connecting to WebSocket: ${wsUrl}`);
+            loadingText.textContent = `Connecting to WebSocket...`;
             ws = new WebSocket(wsUrl);
             
             ws.onopen = () => {
