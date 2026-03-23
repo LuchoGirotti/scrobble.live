@@ -148,7 +148,7 @@ class ScrobbleLiveDiscordBot {
                 largeImageKey: data.albumCoverUrl,
                 largeImageText: data.albumName,
                 smallImageKey: data.scrobblingNow ? 'playing' : 'paused',
-                smallImageText: data.scrobblingNow ? 'Now playing • scrobble.live' : 'Last played • scrobble.live',
+                smallImageText: data.scrobblingNow ? 'Now playing • scrobblelive.vercel.app' : 'Last played • scrobblelive.vercel.app',
                 instance: false,
             };
             
