@@ -18,6 +18,6 @@
       "url": "git+https://github.com/LuchoGirotti/scrobble.live.git"
     },
     "author": "LuchoGirotti",
-    "homepage": "https://scrobble.live",
+    "homepage": "https://scrobblelive.vercel.app",
     "description": "A free and open-source alternative to Last.fm's /now page with real-time WebSocket updates"
   }

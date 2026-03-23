@@ -7,7 +7,7 @@ Scrobble.Live is an independent, free, and open-source project that replicates t
 The official "/now" page is part of Last.fm's "Pro" features. For comparison, visit:
 
 - Official Last.fm page: https://www.last.fm/user/LAST.HQ/now
-- Scrobble.Live equivalent: https://scrobble.live/LAST.HQ
+- Scrobble.Live equivalent: https://scrobblelive.vercel.app/LAST.HQ
 
 ## 🎵 Features
 
@@ -15,21 +15,21 @@ The official "/now" page is part of Last.fm's "Pro" features. For comparison, vi
 - **Discord Rich Presence** - Show your current music in your Discord profile
 - **Clean interface** with album artwork and track information
 - **Free to use** - no registration or API keys required
-- **Clean URLs** - use `scrobble.live/username` format
+- **Clean URLs** - use `scrobblelive.vercel.app/username` format
 - **Always available** - hosted and maintained for everyone
 
 ## 🚀 How to Use
 
 **It's simple! No installation needed.**
 
-Just visit: **`https://scrobble.live/USERNAME`**
+Just visit: **`https://scrobblelive.vercel.app/USERNAME`**
 
 Replace `USERNAME` with any Last.fm username to see their current or last scrobbled track.
 
 **Examples**:
-- https://scrobble.live/LAST.HQ
-- https://scrobble.live/LuchoGirotti
-- https://scrobble.live/your-username
+- https://scrobblelive.vercel.app/LAST.HQ
+- https://scrobblelive.vercel.app/LuchoGirotti
+- https://scrobblelive.vercel.app/your-username
 
 The page will automatically update in real-time when the track changes!
 

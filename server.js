@@ -10,7 +10,7 @@ const PORT = 8080;
 // CORS configuration
 app.use((req, res, next) => {
     const allowedOrigins = [
-        'https://scrobble.live'
+        'https://scrobblelive.vercel.app'
     ];
     
     const origin = req.headers.origin;
